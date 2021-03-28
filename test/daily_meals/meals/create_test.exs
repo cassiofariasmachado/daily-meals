@@ -1,10 +1,10 @@
 defmodule DailyMeals.Meals.CreateTest do
   use DailyMeals.DataCase, async: true
 
+  import DailyMeals.Factory
+
   alias DailyMeals.{Error, Meal}
   alias DailyMeals.Meals.Create
-
-  import DailyMeals.Factory
 
   describe "call/1" do
     test "when all params are valid, returns the meal" do

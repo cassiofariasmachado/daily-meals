@@ -1,10 +1,10 @@
 defmodule DailyMeals.Meals.GetTest do
   use DailyMeals.DataCase, async: true
 
+  import DailyMeals.Factory
+
   alias DailyMeals.{Error, Meal}
   alias DailyMeals.Meals.Get
-
-  import DailyMeals.Factory
 
   describe "by_id/1" do
     test "when meal exists, returns the meal" do

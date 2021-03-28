@@ -1,10 +1,10 @@
 defmodule DailyMeals.Meals.UpdateTest do
   use DailyMeals.DataCase, async: true
 
+  import DailyMeals.Factory
+
   alias DailyMeals.{Error, Meal}
   alias DailyMeals.Meals.Update
-
-  import DailyMeals.Factory
 
   describe "call/1" do
     test "when meal exists, updates the meal" do

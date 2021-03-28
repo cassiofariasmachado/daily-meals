@@ -161,6 +161,25 @@ defmodule DailyMealsWeb.MealsControllerTest do
       assert expected_response == response
     end
 
+    test "when there are invalid params, returns an error", %{conn: conn} do
+      id = "5d80d5e6-84ae-45b5-8d48-937e4406ff73"
+
+      insert(:meal, id: id)
+
+      params = %{
+        "descricao" => ""
+      }
+
+      response =
+        conn
+        |> put(Routes.meals_path(conn, :update, id, params))
+        |> json_response(:bad_request)
+
+      expected_response = %{"message" => %{"descricao" => ["can't be blank"]}}
+
+      assert expected_response == response
+    end
+
     test "when there isn\'t a meal with the given id, returns an error", %{conn: conn} do
       id = "7dba804f-d669-488a-95a0-a9c067548ed2"
 
