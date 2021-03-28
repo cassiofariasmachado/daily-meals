@@ -1,0 +1,9 @@
+{
+    "skip_files": [
+        "test/support",
+        "lib/daily_meals/application.ex",
+        "lib/daily_meals_web.ex",
+        "lib/daily_meals_web/router.ex",
+        "lib/daily_meals_web/views/error_helpers.ex"
+    ]
+}
