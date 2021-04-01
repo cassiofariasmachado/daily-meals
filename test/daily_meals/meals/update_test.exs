@@ -8,6 +8,7 @@ defmodule DailyMeals.Meals.UpdateTest do
 
   describe "call/1" do
     test "when meal exists, updates the meal" do
+      insert(:user)
       insert(:meal)
 
       params = %{
@@ -36,9 +37,7 @@ defmodule DailyMeals.Meals.UpdateTest do
         "descricao" => "Abacate"
       }
 
-      response =
-        params
-        |> Update.call()
+      response = Update.call(params)
 
       assert {
                :error,

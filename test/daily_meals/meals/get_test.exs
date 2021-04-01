@@ -8,6 +8,7 @@ defmodule DailyMeals.Meals.GetTest do
 
   describe "by_id/1" do
     test "when meal exists, returns the meal" do
+      insert(:user)
       insert(:meal)
 
       response =
@@ -26,9 +27,9 @@ defmodule DailyMeals.Meals.GetTest do
     end
 
     test "when the meal not exits, returns an error" do
-      response =
-        "47d5430a-9569-40d7-9a33-222aaedb8e29"
-        |> Get.by_id()
+      meal_id = "47d5430a-9569-40d7-9a33-222aaedb8e29"
+
+      response = Get.by_id(meal_id)
 
       assert {
                :error,

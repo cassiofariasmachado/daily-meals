@@ -1,22 +1,22 @@
-defmodule DailyMeals.MealTest do
+defmodule DailyMeals.UserTest do
   use DailyMeals.DataCase, async: true
 
   import DailyMeals.Factory
 
-  alias DailyMeals.Meal
+  alias DailyMeals.User
   alias Ecto.Changeset
 
   describe "changeset/1" do
     test "when the create params are valid, returns a valid changeset" do
-      params = build(:meal_params)
+      params = build(:user_params)
 
-      response = Meal.changeset(params)
+      response = User.changeset(params)
 
       assert %Changeset{
                changes: %{
-                 descricao: "Avocado",
-                 calorias: 300,
-                 data: ~U[2021-03-28 13:59:13Z]
+                 nome: "Cassio",
+                 email: "cassio@email.com",
+                 cpf: "12345678910"
                },
                valid?: true
              } = response
@@ -25,13 +25,12 @@ defmodule DailyMeals.MealTest do
     test "when there are some error, returns an invalid changeset" do
       params = %{}
 
-      response = Meal.changeset(params)
+      response = User.changeset(params)
 
       expected_response = %{
-        calorias: ["can't be blank"],
-        data: ["can't be blank"],
-        descricao: ["can't be blank"],
-        user_id: ["can't be blank"]
+        cpf: ["can't be blank"],
+        email: ["can't be blank"],
+        nome: ["can't be blank"]
       }
 
       assert expected_response == errors_on(response)
@@ -40,39 +39,39 @@ defmodule DailyMeals.MealTest do
 
   describe "changeset/2" do
     setup %{} do
-      params = build(:meal_params)
+      params = build(:user_params)
 
-      changeset = Meal.changeset(params)
+      changeset = User.changeset(params)
 
       {:ok, changeset: changeset}
     end
 
     test "when the update params are valid, returns a valid changeset", %{changeset: changeset} do
-      params = %{descricao: "Abacate"}
+      params = %{nome: "Cassio Machado"}
 
       response =
         changeset
-        |> Meal.changeset(params)
+        |> User.changeset(params)
 
       assert %Changeset{
                changes: %{
-                 descricao: "Abacate",
-                 calorias: 300,
-                 data: ~U[2021-03-28 13:59:13Z]
+                 nome: "Cassio Machado",
+                 email: "cassio@email.com",
+                 cpf: "12345678910"
                },
                valid?: true
              } = response
     end
 
     test "when there are some error, returns an invalid changeset", %{changeset: changeset} do
-      params = %{descricao: ""}
+      params = %{nome: ""}
 
       response =
         changeset
-        |> Meal.changeset(params)
+        |> User.changeset(params)
 
       expected_response = %{
-        descricao: ["can't be blank"]
+        nome: ["can't be blank"]
       }
 
       assert expected_response == errors_on(response)

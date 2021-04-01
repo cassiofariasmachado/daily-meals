@@ -8,7 +8,11 @@ defmodule DailyMeals.Meals.CreateTest do
 
   describe "call/1" do
     test "when all params are valid, returns the meal" do
-      params = build(:meal_params)
+      user_id = "d3269a1f-c362-4396-866b-7373abadea38"
+
+      insert(:user, id: user_id)
+
+      params = build(:meal_params, user_id: user_id)
 
       response = Create.call(params)
 
@@ -17,7 +21,8 @@ defmodule DailyMeals.Meals.CreateTest do
                 id: _id,
                 descricao: "Avocado",
                 calorias: 300,
-                data: ~U[2021-03-28 13:59:13Z]
+                data: ~U[2021-03-28 13:59:13Z],
+                user_id: _user_id
               }} = response
     end
 

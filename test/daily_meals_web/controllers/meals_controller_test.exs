@@ -5,7 +5,11 @@ defmodule DailyMealsWeb.MealsControllerTest do
 
   describe "create/2" do
     test "when all params are valid, creates the meal", %{conn: conn} do
-      params = build(:meal_web_params)
+      user_id = "019d8b51-aa05-43fd-9244-032b7087d726"
+
+      insert(:user, id: user_id)
+
+      params = build(:meal_web_params, user_id: user_id)
 
       response =
         conn
@@ -17,7 +21,8 @@ defmodule DailyMealsWeb.MealsControllerTest do
                  "id" => _id,
                  "descricao" => "Avocado",
                  "calorias" => 300,
-                 "data" => "2021-03-28T13:59:13Z"
+                 "data" => "2021-03-28T13:59:13Z",
+                 "user_id" => _user_id
                },
                "message" => "Meal created"
              } = response
@@ -35,7 +40,8 @@ defmodule DailyMealsWeb.MealsControllerTest do
         "message" => %{
           "calorias" => ["can't be blank"],
           "data" => ["can't be blank"],
-          "descricao" => ["can't be blank"]
+          "descricao" => ["can't be blank"],
+          "user_id" => ["can't be blank"]
         }
       }
 
@@ -47,6 +53,7 @@ defmodule DailyMealsWeb.MealsControllerTest do
     test "when there is a meal with the given id, deletes the meal", %{conn: conn} do
       id = "446968d2-1878-48cc-a7bd-d45638e19508"
 
+      insert(:user)
       insert(:meal, id: id)
 
       response =
@@ -86,21 +93,24 @@ defmodule DailyMealsWeb.MealsControllerTest do
 
   describe "show/2" do
     test "when there is a meal with the given id, returns the meal", %{conn: conn} do
-      id = "d96f3230-5a00-4d35-907f-cc0fce7739c0"
+      meal_id = "d96f3230-5a00-4d35-907f-cc0fce7739c0"
+      user_id = "b241b42c-5a41-4623-a6c9-55888c91efa4"
 
-      insert(:meal, id: id)
+      insert(:user, id: user_id)
+      insert(:meal, id: meal_id, user_id: user_id)
 
       response =
         conn
-        |> get(Routes.meals_path(conn, :show, id))
+        |> get(Routes.meals_path(conn, :show, meal_id))
         |> json_response(:ok)
 
       expected_response = %{
         "meal" => %{
-          "id" => id,
+          "id" => meal_id,
           "descricao" => "Avocado",
           "calorias" => 300,
-          "data" => "2021-03-28T13:59:13Z"
+          "data" => "2021-03-28T13:59:13Z",
+          "user_id" => user_id
         }
       }
 
@@ -136,9 +146,11 @@ defmodule DailyMealsWeb.MealsControllerTest do
 
   describe "update/2" do
     test "when there is a meal with the given id, updates the meal", %{conn: conn} do
-      id = "18ad3c36-3af6-47ed-9c02-0821af330673"
+      meal_id = "18ad3c36-3af6-47ed-9c02-0821af330673"
+      user_id = "14dcac0e-1fc1-427e-8a7c-5d94488ce092"
 
-      insert(:meal, id: id)
+      insert(:user, id: user_id)
+      insert(:meal, id: meal_id, user_id: user_id)
 
       params = %{
         "descricao" => "Abacate"
@@ -146,15 +158,16 @@ defmodule DailyMealsWeb.MealsControllerTest do
 
       response =
         conn
-        |> put(Routes.meals_path(conn, :update, id, params))
+        |> put(Routes.meals_path(conn, :update, meal_id, params))
         |> json_response(:ok)
 
       expected_response = %{
         "meal" => %{
+          "id" => meal_id,
           "calorias" => 300,
           "data" => "2021-03-28T13:59:13Z",
           "descricao" => "Abacate",
-          "id" => "18ad3c36-3af6-47ed-9c02-0821af330673"
+          "user_id" => user_id
         }
       }
 
@@ -164,6 +177,7 @@ defmodule DailyMealsWeb.MealsControllerTest do
     test "when there are invalid params, returns an error", %{conn: conn} do
       id = "5d80d5e6-84ae-45b5-8d48-937e4406ff73"
 
+      insert(:user)
       insert(:meal, id: id)
 
       params = %{

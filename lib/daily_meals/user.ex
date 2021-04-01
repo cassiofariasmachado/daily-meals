@@ -1,24 +1,23 @@
-defmodule DailyMeals.Meal do
+defmodule DailyMeals.User do
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias DailyMeals.User
+  alias DailyMeals.Meal
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
 
-  @create_params [:descricao, :data, :calorias, :user_id]
-  @update_params @create_params -- [:user_id]
+  @create_params [:nome, :cpf, :email]
+  @update_params @create_params
 
-  @derive {Jason.Encoder, only: [:id, :descricao, :data, :calorias, :user_id]}
+  @derive {Jason.Encoder, only: [:id, :nome, :cpf, :email]}
 
-  schema "meals" do
-    field :descricao, :string
-    field :data, :utc_datetime
-    field :calorias, :integer
+  schema "users" do
+    field :nome, :string
+    field :cpf, :string
+    field :email, :string
 
-    belongs_to :user, User
+    has_many :daily_meals, Meal
 
     timestamps()
   end
